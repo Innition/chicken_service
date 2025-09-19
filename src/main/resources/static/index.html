@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+<body>
+<h1>Login</h1>
+<form id="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+    <button type="submit">Login</button>
+</form>
+<script>
+    (async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const response = await fetch(`/auth/validate?token=${token}`);
+                if (!response.ok) {
+                    // 如果验证失败，跳转到登录页面
+                    console.warn('Invalid token. Re login...');
+                } else {
+                    console.log('Token is valid.');
+                    window.location.href = '/navigate.html';
+                }
+            } catch (error) {
+                console.error('验证 Token 时出错:', error);
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('token', data.token);
+                    window.location.href = data.redirect;
+                } else {
+                    alert('Invalid credentials!');
+                }
+            } catch (error) {
+                console.error('登录时出错:', error);
+                alert('登录时发生错误，请稍后再试。');
+            }
+        });
+    })();
+</script>
+</body>
+</html>

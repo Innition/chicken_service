@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小鸡存档</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <script src="/js/auth.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+        }
+        .file-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+        .upload-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>小鸡存档</h1>
+<table>
+    <thead>
+    <tr>
+        <th>文件信息</th>
+        <th>上传时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 使用 Thymeleaf 动态渲染文件列表 -->
+    <tr th:each="file : ${fileList}">
+        <td>
+            <div class="file-item">
+                <img class="file-icon"
+                     th:src="${file[3] == 'image' ? '/images/image-icon.png'
+                     : (file[3] == 'video' ? '/images/video-icon.png'
+                     : (file[3] == 'compressed' ? '/images/compressed-icon.png'
+                     : '/images/unknown-icon.png'))}"
+                     alt="文件图标">
+                <span th:text="${file[0]}">文件名</span>
+            </div>
+        </td>
+        <td th:text="${file[4]}">上传时间</td>
+        <td>
+            <a th:href="${file[2]}" download>下载</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="extra-download">
+    <p>没有最新的存档？请尝试越过数据库下载最新存档：<a th:href="${defaultDownloadUrl}" target="_blank">下载</a></p>
+</div>
+<div class="upload-section">
+    <h2>上传存档</h2>
+    <form action="/save/web-upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">上传</button>
+    </form>
+</div>
+</body>
+</html>

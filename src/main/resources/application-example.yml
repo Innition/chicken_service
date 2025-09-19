@@ -1,0 +1,51 @@
+server:
+  port: 13588
+  address: localhost
+user:
+
+  username: CONFIG_HERE
+  pwd: CONFIG_HERE
+secret:
+  key: CONFIG_HERE
+folder:
+  path: C:\Program Files (x86)\ChickenUpload
+  version-history-path: ${user.home}\.ChickenAppVersionHistory
+app:
+  name: SaveUpload.exe
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/saves?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: CONFIG_HERE
+    password: CONFIG_HERE
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+  type-aliases-package: cn.lazylhxzzy.pojo
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: CONFIG_HERE
+    access-key-secret: CONFIG_HERE
+    bucket-name: CONFIG_HERE
+
+whitelist:
+  ips: CONFIG_HERE
+
+download:
+  default-url: CONFIG_HERE
+
+# 静态文件请求匹配方式
+  spring:
+  mvc:
+    static-path-pattern: /**
+  # 修改默认的静态寻址资源目录
+  resources:
+    static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/

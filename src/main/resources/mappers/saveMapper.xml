@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lazylhxzzy.save_upload.mapper.SaveMapper">
+    <insert id="addSave" parameterType="cn.lazylhxzzy.save_upload.pojo.Save">
+        insert into saves.saves(id, name, url, date)
+        values (#{id}, #{name}, #{url}, #{date});
+    </insert>
+    <select id="getSaveIds" resultType="Integer">
+            select id
+            from saves.saves;
+    </select>
+    <select id="getSaveList" resultType="cn.lazylhxzzy.save_upload.pojo.Save">
+        select *
+        from saves.saves;
+    </select>
+    <select id="getSaveById" parameterType="int" resultType="cn.lazylhxzzy.save_upload.pojo.Save">
+        select *
+        from saves.saves
+        where id = #{id};
+    </select>
+    <update id="updateSave" parameterType="cn.lazylhxzzy.save_upload.pojo.Save">
+        update saves.saves
+        set url = #{url}, date = #{date} , name = #{name}
+        where id = #{id};
+    </update>
+    <delete id="deleteSave" parameterType="int">
+        delete
+        from saves.saves
+        where id = #{id};
+    </delete>
+</mapper>
